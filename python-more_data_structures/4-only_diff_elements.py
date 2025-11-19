@@ -1,7 +1,4 @@
 #!/usr/bin/python3
 def only_diff_elements(set_1, set_2):
-    new_set = []
-    for el in set_1 + set_2:
-        if el not in new_set:
-            new_set.append(el)
+    new_set = list(set_1 | set_2)
     return new_set
