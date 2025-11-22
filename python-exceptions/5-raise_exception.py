@@ -5,6 +5,7 @@ def raise_exception():
     try:
         divv = a / b
     except TypeError:
-        divv = None
+         divv = 0
+         print("wrong type")
     finally:
         return divv
