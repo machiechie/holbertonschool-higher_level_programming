@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 def raise_exception_msg(message=""):
-    message = Hello
+    message = "C is fun"
     try:
         print(mesage)
     except NameError:
-        print("Exception raised")
+        print("Python is cool")
