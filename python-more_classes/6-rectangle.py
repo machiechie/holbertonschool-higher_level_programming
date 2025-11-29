@@ -55,7 +55,7 @@ class Rectangle:
 """Module defining a Rectangle class with instance counting."""
 
 
-class number_of_instances:
+class Rectangle:
     """Class variable to count the number of Rectangle instances."""
     number_of_instances = 0
 
