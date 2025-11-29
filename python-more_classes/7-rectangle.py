@@ -1,13 +1,16 @@
 #!/usr/bin/python3
 """This module defines a Rectangle class."""
 
-
 class Rectangle:
-    """A class to represent a rectangle."""
+    """A class to represent a rectangle with customizable print symbol and instance tracking."""
+
+    number_of_instances = 0
+    print_symbol = "#"
 
     def __init__(self, width=0, height=0):
         self.width = width
         self.height = height
+        type(self).number_of_instances += 1
 
     @property
     def width(self):
@@ -44,34 +47,11 @@ class Rectangle:
     def __str__(self):
         if self.width == 0 or self.height == 0:
             return ""
-        return "\n".join(["#" * self.width for _ in range(self.height)])
+        return "\n".join([str(self.print_symbol) * self.width for _ in range(self.height)])
 
     def __repr__(self):
         return f"Rectangle({self.width}, {self.height})"
 
     def __del__(self):
-        print("Bye rectangle...")
-
-class Rectangle:
-    """A class to represent a rectangle and track number of instances."""
-    number_of_instances = 0
-    def __init__(self, width=0, height=0):
-        type(self).number_of_instances += 1
-        self.width = width
-        self.height = height
-
-    def __del__(self):
         type(self).number_of_instances -= 1
         print("Bye rectangle...")
-
-class Rectangle:
-    """A class to represent a rectangle with customizable print symbol."""
-    print_symbol = "#"
-    def __init__(self, width=0, height=0):
-        self.width = width
-        self.height = height
-
-    def __str__(self):
-        if self.width == 0 or self.height == 0:
-            return ""
-        return "\n".join([str(self.print_symbol) * self.width for _ in range(self.height)])
