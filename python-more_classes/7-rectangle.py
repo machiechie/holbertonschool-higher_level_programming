@@ -53,6 +53,7 @@ class Rectangle:
         print("Bye rectangle...")
 
 class Rectangle:
+    """A class to represent a rectangle and track number of instances."""
     number_of_instances = 0
     def __init__(self, width=0, height=0):
         type(self).number_of_instances += 1
@@ -64,6 +65,7 @@ class Rectangle:
         print("Bye rectangle...")
 
 class Rectangle:
+    """A class to represent a rectangle with customizable print symbol."""
     print_symbol = "#"
     def __init__(self, width=0, height=0):
         self.width = width
