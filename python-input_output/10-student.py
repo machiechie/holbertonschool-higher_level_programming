@@ -29,7 +29,7 @@ class Student:
         if attrs is None:
             # Return all attributes
             return self.__dict__
-        
+
         # Return only attributes in attrs that exist in instance
         result = {}
         for key in attrs:
