@@ -4,12 +4,12 @@
 import csv
 import json
 
-def convert_csv_to_json(csv_filename, json_filename):
+def convert_csv_to_json(csv_filename, json_filename="data.json"):
     """
     Convert CSV data to JSON and save it to a file.
 
     :param csv_filename: Input CSV file
-    :param json_filename: Output JSON file
+    :param json_filename: Output JSON file (default: data.json)
     :return: True if conversion succeeded, False otherwise
     """
     try:
@@ -26,3 +26,4 @@ def convert_csv_to_json(csv_filename, json_filename):
 
     except (FileNotFoundError, OSError, csv.Error, json.JSONDecodeError):
         return False
+
