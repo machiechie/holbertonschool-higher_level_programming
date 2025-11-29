@@ -52,8 +52,6 @@ class Rectangle:
     def __del__(self):
         print("Bye rectangle...")
 
-"""Module defining a Rectangle class with instance counting."""
-
 
 class Rectangle:
     """Class variable to count the number of Rectangle instances."""
