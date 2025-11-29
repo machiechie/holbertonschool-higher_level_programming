@@ -3,10 +3,7 @@
 
 
 def read_file(filename=""):
-    """Read and return the contents of a file.
-
-    Args:
-        filename (str): The name of the file to read. Defaults to an empty string."""
+    """Read and return the contents of a file."""
     with open(filename, 'r') as file:
         content = file.read()
     print(content, end='')
