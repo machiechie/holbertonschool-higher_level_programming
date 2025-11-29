@@ -3,7 +3,7 @@
 
 
 class Rectangle:
-    """A class to represent a rectangle 
+    """A class to represent a rectangle
     with customizable print symbol and instance tracking."""
 
     number_of_instances = 0
