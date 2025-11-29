@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 class Rectangle:
-    """
-    This class defines a rectangle
-    """
+    """This class defines a rectangle"""
     pass
 
-print(Rectangle._doc_)
+print(Rectangle.__doc__)
