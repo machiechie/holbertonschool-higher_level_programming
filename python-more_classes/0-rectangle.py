@@ -2,4 +2,6 @@
 class Rectangle:
     """A class to represent a rectangle."""
     pass
-print(Rectangle.__doc__)
+
+my_rectangle = Rectangle()
+print(my_rectangle.__doc__)
