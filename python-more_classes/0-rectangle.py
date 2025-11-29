@@ -1,7 +1,7 @@
 #!/usr/bin/python3
+"""This module defines an empty class Rectangle."""
+
+
 class Rectangle:
     """A class to represent a rectangle."""
     pass
-
-my_rectangle = Rectangle()
-print(my_rectangle.__doc__)
