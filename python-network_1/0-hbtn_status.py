@@ -1,16 +1,14 @@
 #!/usr/bin/python3
-import urllib
+"""Fetches https://intranet.hbtn.io/status using urllib"""
 
-"""Module for fetching URL content"""
+import urllib.request
 
-def fetch_url(url):
-    try:
-        with urllib.request.urlopen(url) as response:
-            return response.read()
-    except Exception as e:
-        return f"An error occurred: {e}"
-    
 if __name__ == "__main__":
     url = "https://intranet.hbtn.io/status"
-    content = fetch_url(url)
-    print(content)
+
+    with urllib.request.urlopen(url) as response:
+        body = response.read()
+        print("Body response:")
+        print("    - type: {}".format(type(body)))
+        print("    - content: {}".format(body))
+        print("    - utf8 content: {}".format(body.decode("utf-8")))
