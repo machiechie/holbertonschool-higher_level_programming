@@ -3,11 +3,10 @@
 
 import sys
 import requests
-import os
 
 if __name__ == "__main__":
     username = sys.argv[1]
-    token = os.environ.get("GITHUB_TOKEN")  # do not hardcode
+    token = sys.argv[2]  # personal access token
 
     response = requests.get(
         "https://api.github.com/user",
@@ -15,7 +14,7 @@ if __name__ == "__main__":
     )
 
     if response.status_code == 200:
-        print(response.json().get("id"))
+        data = response.json()
+        print(data.get("id"))
     else:
         print("Error: {}".format(response.status_code))
-
