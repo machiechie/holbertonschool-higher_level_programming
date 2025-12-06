@@ -1,94 +1,102 @@
-#!/usr/bin/env python3
-"""
-Task 04 – Dynamic Data Display + SQLite
-Flask app that displays product data from JSON, CSV, or SQLite.
-"""
-
-from flask import Flask, render_template, request
-import json
-import csv
+# task_04_db.py
 import sqlite3
+import csv
+import json
+import os
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
+DATABASE = 'products.db'
+JSON_FILE = 'products.json'
 
+# --- Data Fetching Functions ---
 
-def load_from_json():
-    """Load products from a JSON file."""
+def get_data_from_json():
+    """Reads product data from a JSON file."""
     try:
-        with open("products.json", "r") as f:
+        if not os.path.exists(JSON_FILE):
+            print(f"Error: JSON file '{JSON_FILE}' not found.")
+            return []
+            
+        with open(JSON_FILE, 'r') as f:
             return json.load(f)
-    except Exception:
-        return None
+    except Exception as e:
+        print(f"JSON reading error: {e}")
+        return []
 
+def get_data_from_csv():
+    """Reads product data from a CSV file (assuming 'products.csv' exists or using mock data)."""
+    # Using mock data structure similar to previous tasks for consistency
+    csv_data = [
+        ['id', 'name', 'category', 'price'],
+        ['201', 'Book', 'Media', '12.99'],
+        ['202', 'Pen', 'Office Supplies', '3.50']
+    ]
+    
+    header = csv_data[0]
+    products = []
+    for row in csv_data[1:]:
+        # Create dictionary from CSV rows
+        products.append(dict(zip(header, row)))
+    return products
 
-def load_from_csv():
-    """Load products from a CSV file."""
+def get_data_from_db():
+    """Fetches product data from the SQLite database."""
+    conn = None
     try:
-        products = []
-        with open("products.csv", "r") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                products.append({
-                    "id": row["id"],
-                    "name": row["name"],
-                    "category": row["category"],
-                    "price": row["price"]
-                })
-        return products
-    except Exception:
-        return None
-
-
-def load_from_sqlite():
-    """Load products from SQLite database."""
-    try:
-        conn = sqlite3.connect("products.db")
+        conn = sqlite3.connect(DATABASE)
+        # Configure connection to return rows as dictionaries for easier template handling
+        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
+        
         cursor.execute("SELECT id, name, category, price FROM Products")
         rows = cursor.fetchall()
-
-        products = []
-        for row in rows:
-            products.append({
-                "id": row[0],
-                "name": row[1],
-                "category": row[2],
-                "price": row[3],
-            })
-
-        conn.close()
+        
+        # Convert sqlite3.Row objects to standard dictionaries
+        products = [dict(row) for row in rows]
         return products
-
-    except Exception:
+    except sqlite3.Error as e:
+        # Handle database connection or query errors
+        print(f"Database error: {e}")
+        return None  # Return None to signal a critical error
+    except Exception as e:
+        print(f"Unexpected error: {e}")
         return None
+    finally:
+        if conn:
+            conn.close()
 
+# --- Flask Route ---
 
-@app.route("/")
-def display_products():
-    source = request.args.get("source")
+@app.route('/products')
+def product_display():
+    source = request.args.get('source')
+    products = None
+    error_message = None
 
-    if source == "json":
-        data = load_from_json()
-
-    elif source == "csv":
-        data = load_from_csv()
-
-    elif source == "sql":
-        data = load_from_sqlite()
-
+    if source == 'json':
+        products = get_data_from_json()
+    elif source == 'csv':
+        products = get_data_from_csv()
+    elif source == 'sql':
+        products = get_data_from_db()
+        if products is None:
+            # Database connection/read failed
+            error_message = "Database Error: Could not retrieve data."
     else:
-        return render_template("product_display.html",
-                               error="Wrong source",
-                               products=None)
+        # Invalid source parameter
+        error_message = "Wrong source. Please use 'json', 'csv', or 'sql'."
 
-    # If database / file error
-    if data is None:
-        return render_template("product_display.html",
-                               error="Error loading data",
-                               products=None)
+    if error_message:
+        return render_template('product_display.html', error=error_message)
+    elif products is not None:
+        return render_template('product_display.html', products=products, source=source)
+    else:
+        # Fallback for unexpected case
+        return render_template('product_display.html', error="An unknown error occurred.")
 
-    return render_template("product_display.html", products=data, error=None)
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
+    # Ensure the database is set up before running the app
+    import db_setup
+    db_setup.create_database()
     app.run(debug=True)
